@@ -104,6 +104,15 @@ open(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
 }
 
 static ERL_NIF_TERM
+close(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
+  erlang_resource<duckdb::DuckDB>* dbres = nullptr;
+  if(!enif_get_resource(env, argv[0], database_nif_type, (void**)&dbres))
+    return enif_make_badarg(env);
+  dbres->data = nullptr;
+  return nif::make_atom(env, "ok");
+}
+
+static ERL_NIF_TERM
 connection(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
   auto dbres = get_resource<duckdb::DuckDB>(env, argv[0]);
   if (!dbres)
@@ -721,6 +730,7 @@ static ErlNifFunc nif_funcs[] = {
   {"number_of_threads", 1, number_of_threads, ERL_NIF_DIRTY_JOB_IO_BOUND},
   {"extension_is_loaded", 2, extension_is_loaded, ERL_NIF_DIRTY_JOB_IO_BOUND},
   {"open", 2, open, ERL_NIF_DIRTY_JOB_IO_BOUND},
+  {"close", 1, close, ERL_NIF_DIRTY_JOB_IO_BOUND},
   {"connection", 1, connection, ERL_NIF_DIRTY_JOB_IO_BOUND},
   {"query", 2, query, ERL_NIF_DIRTY_JOB_IO_BOUND},
   {"query", 3, query, ERL_NIF_DIRTY_JOB_IO_BOUND},

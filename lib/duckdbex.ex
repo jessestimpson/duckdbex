@@ -74,6 +74,24 @@ defmodule Duckdbex do
     do: Duckdbex.NIF.open(":memory:", nil)
 
   @doc """
+  Closes database that has been opened.
+
+  The reference representing the database is no longer usable after close is called. Trying to use it
+  will cause undefined behavior, and very likely a SEGFAULT. For this reason, the developer must make sure
+  that all agents on the system have removed the database reference from their working memory before close
+  is called.
+
+  ## Examples
+  ```
+  iex> {:ok, db} = Duckdbex.open("my_database.duckdb")
+  iex> Duckdbex.close(db)
+  :ok
+
+  """
+  @spec close(db()) :: :ok | {:error, reason()}
+  def close(db) when is_reference(db), do: Duckdbex.NIF.close(db)
+
+  @doc """
   Creates connection object to work with database.
 
   To work with database the connection object is requiered. Connection object hold a shared reference to database, so it is possible to forget the database reference and hold the connection reference only.

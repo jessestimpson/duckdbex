@@ -15,6 +15,11 @@ defmodule DuckdbexTest do
     assert {:ok, _db} = Duckdbex.open()
   end
 
+  test "close/1" do
+    assert {:ok, db} = Duckdbex.open()
+    assert :ok = Duckdbex.close(db)
+  end
+
   test "connection/1" do
     assert {:ok, db} = Duckdbex.open()
     assert {:ok, _conn} = Duckdbex.connection(db)

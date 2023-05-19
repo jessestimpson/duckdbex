@@ -19,6 +19,9 @@ defmodule Duckdbex.NIF do
   @spec open(binary(), Duckdbex.Config.t()) :: {:ok, db()} | {:error, reason()}
   def open(_path, _config), do: :erlang.nif_error(:not_loaded)
 
+  @spec close(db()) :: :ok | {:error, reason()}
+  def close(_database), do: :erlang.nif_error(:not_loaded)
+
   @spec connection(db()) :: {:ok, connection()} | {:error, reason()}
   def connection(_database), do: :erlang.nif_error(:not_loaded)
 
