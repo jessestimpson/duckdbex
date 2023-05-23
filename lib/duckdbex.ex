@@ -81,6 +81,9 @@ defmodule Duckdbex do
   that all agents on the system have removed the database reference from their working memory before close
   is called.
 
+  See http://erlang.org/pipermail/erlang-questions/2020-November/100131.html for a discussion on why you
+  might want to call close/1 explicitly instead of relying on the garbage collector.
+
   ## Examples
   ```
   iex> {:ok, db} = Duckdbex.open("my_database.duckdb")
