@@ -2,6 +2,7 @@
 #include "duckdb.hpp"
 #include "term.h"
 #include <iostream>
+#include <cmath>
 
 bool nif::value_to_term(ErlNifEnv* env, const duckdb::Value& value, ERL_NIF_TERM& sink) {
   // <dbg>
