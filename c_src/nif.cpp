@@ -566,7 +566,12 @@ appender_flush(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
   if (!apres)
     return enif_make_badarg(env);
 
-  apres->data->Flush();
+  try {
+    apres->data->Flush();
+
+  } catch (std::exception& ex) {
+    return enif_make_badarg(env);
+  }
 
   return nif::make_atom(env, "ok");
 }

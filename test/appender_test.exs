@@ -48,6 +48,21 @@ defmodule Duckdbex.AppenderTest do
     end)
   end
 
+  test "append row with primary key violation", %{conn: conn} do
+    {:ok, _} =
+      Duckdbex.query(conn, """
+        CREATE TABLE appender_test_1_2(id VARCHAR PRIMARY KEY, boolean BOOLEAN);
+      """)
+
+    assert {:ok, appender} = Duckdbex.appender(conn, "appender_test_1_2")
+
+    assert_raise(ArgumentError, fn ->
+      Duckdbex.appender_add_row(appender, ["foo", true])
+      Duckdbex.appender_add_row(appender, ["foo", true])
+      Duckdbex.appender_flush(appender)
+    end)
+  end
+
   test "append multiple rows", %{conn: conn} do
     {:ok, _} =
       Duckdbex.query(conn, """
